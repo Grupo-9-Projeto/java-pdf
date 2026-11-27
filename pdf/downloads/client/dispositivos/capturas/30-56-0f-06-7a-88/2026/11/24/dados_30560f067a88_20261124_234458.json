@@ -1,0 +1,23 @@
+[
+  {
+    "Quando foi Coletado":"2026-11-24 23:45:09",
+    "cpu total(%)":2.5,
+    "ram(%)":77.1,
+    "perda pacotes":0.0,
+    "disco(%)":97.4
+  },
+  {
+    "Quando foi Coletado":"2026-11-24 23:45:23",
+    "cpu total(%)":3.2,
+    "ram(%)":77.2,
+    "perda pacotes":0.0,
+    "disco(%)":97.4
+  },
+  {
+    "Quando foi Coletado":"2026-11-24 23:45:37",
+    "cpu total(%)":23.8,
+    "ram(%)":78.1,
+    "perda pacotes":0.0,
+    "disco(%)":97.4
+  }
+]

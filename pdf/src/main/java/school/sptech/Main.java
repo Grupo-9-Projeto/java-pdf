@@ -1,5 +1,7 @@
 package school.sptech;
 
+import software.amazon.awssdk.services.s3.model.S3Object;
+
 import java.util.List;
 
 public class Main {
@@ -23,6 +25,9 @@ public class Main {
 //        ConversorPdf conversorPdf = new ConversorPdf();
 //        conversorPdf.converterHtmlParaPdf(html, nomeArquivo);
         S3Provider resposta = new S3Provider();
-        resposta.listarObjetos(resposta.getBucket());
+
+        //Adata precisa ser fornecida em ano/mes/dia
+        S3Object paraBaixar = resposta.listarObjetos(resposta.getBucket(), "30:56:0f:06:7a:88", "2026/11/24").getFirst();
+
     }
 }
