@@ -3,17 +3,23 @@ package school.sptech;
 import school.sptech.exceptions.DadoinvalidoException;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.Bucket;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -91,6 +97,45 @@ public class S3Provider {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Double mediaMetricas(S3Provider resposta,S3Object objetos ){
+        S3Client s3Client = getS3Client();
+        GetObjectRequest requisicao = GetObjectRequest.builder()
+                .bucket(resposta.getBucket().name())
+                .key(objetos.key())
+                .build();
+
+        ResponseInputStream<GetObjectResponse> arquivo = s3Client.getObject(requisicao);
+
+        try {
+            String conteudo = new String(arquivo.readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println(conteudo);
+
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+
+            List<LeituraMetrica> leituras = mapper.readValue(
+                    conteudo,
+                    new TypeReference<List<LeituraMetrica>>() {}
+            );
+            List<Integer> horas = new ArrayList<>();
+            for (LeituraMetrica leitura : leituras) {
+                Integer hora = leitura.getDataColeta().getHour();
+
+                if(!horas.contains(hora)){
+                    horas.add(hora);
+                }
+            }
+
+            for (Integer hora : horas) {
+                System.out.println(hora);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return 0.0;
     }
 
 }

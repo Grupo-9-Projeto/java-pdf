@@ -1,5 +1,8 @@
 package school.sptech;
 
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
 import java.util.List;
@@ -27,7 +30,9 @@ public class Main {
         S3Provider resposta = new S3Provider();
 
         //Adata precisa ser fornecida em ano/mes/dia
-        S3Object paraBaixar = resposta.listarObjetos(resposta.getBucket(), "30:56:0f:06:7a:88", "2026/11/24").getFirst();
-
+        S3Object objetos = resposta.listarObjetos(resposta.getBucket(), "30:56:0f:06:7a:88", "2026/11/24").getFirst();
+        resposta.mediaMetricas(resposta, objetos);
     }
+
+
 }
